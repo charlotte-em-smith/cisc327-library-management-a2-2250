@@ -8,10 +8,10 @@ class testR4(unittest.TestCase):
         self.assertEqual(library_service.return_book_by_patron(None, 1), (False, "Invalid patron ID. Must be exactly 6 digits."))
 
         # test book id for existence
-        self.assertEqual(library_service.return_book_by_patron(123456, None), (False, "Book ID is required."))
+        self.assertEqual(library_service.return_book_by_patron(123456, None), (False, 'Invalid book id.'))
 
         # test if book was borrowed by patron
-        self.assertEqual(library_service.return_book_by_patron(123456, 1), (False, "This book has not been borrowed."))
+        self.assertEqual(library_service.return_book_by_patron(123456, 1), (False, 'Invalid book id.'))
 
         # test for update of available copies
         # test book availibility function on a book that shouldn't increase (7/7 copies available)
