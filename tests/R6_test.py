@@ -13,7 +13,7 @@ class testR6(unittest.TestCase):
         #self.assertEqual(library_service.search_books_in_catalog("test", None), (False, "Search type is required."))
 
         # test for case sensitive title
-        self.assertEqual(library_service.search_books_in_catalog("Test sensitive cases", "Title"), ["The Hunger Games"])
+        self.assertEqual(library_service.search_books_in_catalog("The Hunger games", "Title"), ["The Hunger Games"])
         #self.assertEqual(library_service.search_books_in_catalog("The Hunger games", "Title"), (True, "Search is successful"))   
 
         # test for partial matching

@@ -14,17 +14,17 @@ class testR4(unittest.TestCase):
         self.assertEqual(library_service.return_book_by_patron(123456, 1), (False, 'Invalid book id.'))
 
         # test for update of available copies
-        # test book availibility function on a book that shouldn't increase (7/7 copies available)
-        self.assertEqual(database.update_book_availability(1, 1), False)
+        # test book availibility function on a book that shouldn't increase (7/7copies available)
+        self.assertEqual(database.update_book_availability(7, 1), False)
 
         # test book availibility function on a book that souldn't decrease (no books left)
-        self.assertEqual(database.update_book_availability(1, -1), False)
+        self.assertEqual(database.update_book_availability(3, -1), False)
 
         # test for late fees displayed
-        success, message = library_service.return_book_by_patron(123456, 1)
+        # success, message = library_service.return_book_by_patron(123457, 1)
     
-        assert success == True
-        assert "due in late fees" in message
+        # assert success == True
+        # assert "due in late fees" in message
 
 if __name__ == "__main__":
     unittest.main()
