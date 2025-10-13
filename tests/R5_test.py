@@ -15,7 +15,7 @@ class testR5(unittest.TestCase):
         # test for no overdue fees
         library_service.return_book_by_patron("123458", 2)
         start_date = datetime.now()
-        end_date = start_date + datetime.timedelta(days=7) # 1 week overdue
+        end_date = start_date + timedelta(days=7) # 1 week overdue
         self.assertEqual(library_service.borrow_book_by_patron("123458", 2, start_date, end_date), (True, f'Successfully borrowed "To Kill a Mockingbird". Due date: 2025-10-27.'))
         result = library_service.calculate_late_fee_for_book("123458", 2)
     
