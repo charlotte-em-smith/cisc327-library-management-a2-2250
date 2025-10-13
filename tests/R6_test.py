@@ -13,11 +13,11 @@ class testR6(unittest.TestCase):
         #self.assertEqual(library_service.search_books_in_catalog("test", None), (False, "Search type is required."))
 
         # test for case sensitive title
-        self.assertEqual(library_service.search_books_in_catalog("The Hunger games", "Title"), ["The Hunger Games"])
+        self.assertEqual(library_service.search_books_in_catalog("The Great gatsby", "Title"), ["The Hunger Games"])
         #self.assertEqual(library_service.search_books_in_catalog("The Hunger games", "Title"), (True, "Search is successful"))   
 
         # test for partial matching
-        self.assertEqual(library_service.search_books_in_catalog("The Hung", "Title"), ["The Hunger Games"])
+        self.assertEqual(library_service.search_books_in_catalog("The great", "Title"), ["The Hunger Games"])
         #self.assertEqual(library_service.search_books_in_catalog("1111111111111", "ISBN"), (True, "Search is successful"))
 
 if __name__ == "__main__":
