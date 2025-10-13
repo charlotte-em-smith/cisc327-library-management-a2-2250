@@ -223,10 +223,10 @@ def search_books_in_catalog(search_term: str, search_type: str) -> List[Dict]:
     #do error checking here
     if search_type == "isbn":
         book = get_book_by_isbn(search_term)
-    elif search_type == "title":
+    elif search_type == "title" or search_type == "Title":
         search_term = search_term.title()       
         book = get_books_by_title(search_term)
-    elif search_type == "author":
+    elif search_type == "author" or search_type == "Author":
         search_term = search_term.title()
         book = get_books_by_author(search_term)
     else:

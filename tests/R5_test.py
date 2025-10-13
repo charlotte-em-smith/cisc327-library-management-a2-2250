@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 class testR5(unittest.TestCase):
     def test_R5(self):
         # test for no overdue fees
+        library_service.borrow_book_by_patron("123457", 8)
         result = library_service.calculate_late_fee_for_book("123457", 8)
     
         assert result[1] == 0
