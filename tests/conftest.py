@@ -4,4 +4,4 @@ import database
 @pytest.fixture(scope="session", autouse=True)
 def setup_databse():
     print("initializing database.")
-    database.database_init()
+    database.init_database()
