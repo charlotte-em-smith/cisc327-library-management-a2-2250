@@ -5,7 +5,7 @@ import unittest
 class testR4(unittest.TestCase):
     def test_R4(self):
         # test patron for existence
-        self.assertEqual(library_service.return_book_by_patron(None, 1), (False, "Patron ID is required."))
+        self.assertEqual(library_service.return_book_by_patron(None, 1), (False, "Invalid patron ID. Must be exactly 6 digits."))
 
         # test book id for existence
         self.assertEqual(library_service.return_book_by_patron(123456, None), (False, "Book ID is required."))

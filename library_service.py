@@ -226,9 +226,10 @@ def search_books_in_catalog(search_term: str, search_type: str) -> List[Dict]:
     elif search_type == "title":
         search_term = search_term.title()       
         book = get_books_by_title(search_term)
-    elif search_type == "author":
+    else:
         search_term = search_term.title()
         book = get_books_by_author(search_term)
+    
     
     if book == None:
         return None

@@ -10,7 +10,7 @@ class testR7(unittest.TestCase):
         cur = db.cursor()
         
         # select * from db and get column names from *
-        cur.execute("SELECT * FROM books")
+        cur.execute("SELECT * FROM borrow_records")
         col_names = [description[0] for description in cur.description]
 
         # test for existence of all required column headers in the database
