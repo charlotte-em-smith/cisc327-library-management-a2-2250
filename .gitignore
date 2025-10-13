@@ -5,6 +5,7 @@ venv/
 __pycache__/
 *.py[cod]
 *$py.class
+sample_test.py
 
 #SQlite database
 *.db

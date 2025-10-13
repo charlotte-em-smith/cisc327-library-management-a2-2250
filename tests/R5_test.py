@@ -7,7 +7,7 @@ class testR5(unittest.TestCase):
         # test for no overdue fees
         result = library_service.calculate_late_fee_for_book("123456", 2)
     
-        assert result['days_overdue'] == 0
+        assert result[1] == 0
         
         # test for 1 week late (1 week of late fees)
         self.assertEqual(library_service.calculate_late_fee_for_book("123456", 1), (True, "You currently have $3.50 in late fees for this book."))

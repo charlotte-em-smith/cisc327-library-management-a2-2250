@@ -119,7 +119,7 @@ def return_book_by_patron(patron_id: str, book_id: int) -> Tuple[bool, str]:
     TODO: Implement R4 as per requirements
     """
     # Validate patron ID
-    if not patron_id or not isinstance(patron_id, int) or len(patron_id) != 6:
+    if not patron_id or not isinstance(patron_id, int) or len(str(abs(patron_id))) != 6:
         return False, "Invalid patron ID. Must be exactly 6 digits."
     
     # Check if book has been borrowed by patron
@@ -234,7 +234,7 @@ def search_books_in_catalog(search_term: str, search_type: str) -> List[Dict]:
     
     
     if book == None:
-        return None
+        return [] 
     return book
 
 def get_patron_status_report(patron_id: str) -> Dict:
