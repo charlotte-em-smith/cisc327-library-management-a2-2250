@@ -4,13 +4,10 @@ from datetime import datetime, timedelta
 
 class testR5(unittest.TestCase):
     def test_R5(self):
-        # test for 2 weeks of borrowing time
-        success, message = library_service.calculate_late_fee_for_book("123456", 2)
+        # test for no overdue fees
+        result = library_service.calculate_late_fee_for_book("123456", 2)
     
-        borrow_date = datetime.now()
-        due_date = borrow_date + timedelta(days=14)
-        assert success == True
-        assert due_date in message
+        assert result['days_overdue'] == 0
         
         # test for 1 week late (1 week of late fees)
         self.assertEqual(library_service.calculate_late_fee_for_book("123456", 1), (True, "You currently have $3.50 in late fees for this book."))
