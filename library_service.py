@@ -135,20 +135,15 @@ def return_book_by_patron(patron_id: str, book_id: int) -> Tuple[bool, str]:
         return False, "Invalid book id."
     
     # Change availibility of book
-    #fix this error message
     availibility_success = update_book_availability(book_id, 1)
     if availibility_success == False:
         return False, "Error changing availibility."
     
     # Update borrow record
-    #fix error message
     return_date = datetime.now()
     return_success = update_borrow_record_return_date(patron_id, book_id, return_date)
     if return_success == False:
         return False, "Error updating borrow record."
-    
-    #somehow change patron_borrowed_books, and remove the book returned
-    #not gonna worry about this until I need to (ie it breaks something else)
 
     return True, f'Successfully returned "{book["title"]}". Return date: {return_date.strftime("%Y-%m-%d")}.'
 

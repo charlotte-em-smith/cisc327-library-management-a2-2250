@@ -5,19 +5,19 @@ from datetime import datetime, timedelta
 class testR6(unittest.TestCase):
     def test_R6(self):
         # test search term for existence
-        #self.assertEqual(library_service.search_books_in_catalog(None, "test"), [])
+        self.assertEqual(library_service.search_books_in_catalog(None, "test"), [])
         #self.assertEqual(library_service.search_books_in_catalog(None, "test"), (False, "Search term is required."))
 
         # test type for existence
-        #self.assertEqual(library_service.search_books_in_catalog("test", None), [])
+        self.assertEqual(library_service.search_books_in_catalog("test", None), [])
         #self.assertEqual(library_service.search_books_in_catalog("test", None), (False, "Search type is required."))
 
         # test for case sensitive title
-        self.assertEqual(library_service.search_books_in_catalog("The Great gatsby", "Title"), ["The Great Gatsby"])
+        self.assertEqual(library_service.search_books_in_catalog("The Great gatsby", "Title"), [{'author': 'F. Scott Fitzgerald', 'available_copies': 3, 'id': 1, 'isbn': '9780743273565', 'title': 'The Great Gatsby', 'total_copies': 3}])
         #self.assertEqual(library_service.search_books_in_catalog("The Hunger games", "Title"), (True, "Search is successful"))   
 
         # test for partial matching
-        self.assertEqual(library_service.search_books_in_catalog("The great", "Title"), ["The Great Gatsby"])
+        self.assertEqual(library_service.search_books_in_catalog("The great", "Title"), [{'author': 'F. Scott Fitzgerald', 'available_copies': 3, 'id': 1, 'isbn': '9780743273565', 'title': 'The Great Gatsby', 'total_copies': 3}])
         #self.assertEqual(library_service.search_books_in_catalog("1111111111111", "ISBN"), (True, "Search is successful"))
 
 if __name__ == "__main__":
