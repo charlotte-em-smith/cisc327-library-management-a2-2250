@@ -195,11 +195,13 @@ def calculate_late_fee_for_book(patron_id: str, book_id: int, start_date=0, end_
 
     diff = return_date - due_date
 
+    status = 'Acquired late fees'
     #calculate late fees
     if diff >= timedelta(days=7):
         late_fee += 0.5*7
         if diff > timedelta(days=18):
             late_fee += 11.5
+            status = 'Max amount of late fees'
         else:
             late_fee += diff.days - 7
     else:
@@ -209,7 +211,7 @@ def calculate_late_fee_for_book(patron_id: str, book_id: int, start_date=0, end_
     return { 
         'fee_amount': late_fee,
         'days_overdue': diff.days,
-        'status': 'Acquired late fees'
+        'status': status
     }
     
 #search is implemented

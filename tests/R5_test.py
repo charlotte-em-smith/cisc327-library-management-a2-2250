@@ -12,27 +12,39 @@ class testR5(unittest.TestCase):
         assert result['fee_amount'] == 0.00
         assert result['status'] == 'No late fee'
 
-        # test for no overdue fees
+        # test for 1 week late (1 week of late fees)
         library_service.return_book_by_patron("123458", 2)
         start_date = datetime.now()
-        end_date = start_date + timedelta(days=7) # 1 week overdue
+        end_date = start_date + timedelta(days=7)
         self.assertEqual(library_service.borrow_book_by_patron("123458", 2), (True, f'Successfully borrowed "To Kill a Mockingbird". Due date: 2025-10-27.'))
         result = library_service.calculate_late_fee_for_book("123458", 2, start_date, end_date)
     
         assert result['days_overdue'] == 7
         assert result['fee_amount'] == 3.50
         assert result['status'] == 'Acquired late fees'
+
+        # test for 2 week late (2 week of late fees)
+        library_service.return_book_by_patron("123458", 2)
+        start_date = datetime.now()
+        end_date = start_date + timedelta(days=14)
+        self.assertEqual(library_service.borrow_book_by_patron("123458", 2), (True, f'Successfully borrowed "To Kill a Mockingbird". Due date: 2025-10-27.'))
+        result = library_service.calculate_late_fee_for_book("123458", 2, start_date, end_date)
+    
+        assert result['days_overdue'] == 14
+        assert result['fee_amount'] == 10.50
+        assert result['status'] == 'Acquired late fees'
+
+        # test for for max late fee for one book (15$)
+        library_service.return_book_by_patron("123458", 2)
+        start_date = datetime.now()
+        end_date = start_date + timedelta(days=21)
+        self.assertEqual(library_service.borrow_book_by_patron("123458", 2), (True, f'Successfully borrowed "To Kill a Mockingbird". Due date: 2025-10-27.'))
+        result = library_service.calculate_late_fee_for_book("123458", 2, start_date, end_date)
+    
+        assert result['days_overdue'] == 21
+        assert result['fee_amount'] == 10.50
+        assert result['status'] == 'Max amount of late fees'
         
-
-        # change function to have optional start and end date
-        # test for 1 week late (1 week of late fees)
-        # self.assertEqual(library_service.calculate_late_fee_for_book("123456", 1), (True, "You currently have $3.50 in late fees for this book."))
-
-        # # test for 2 weeks late (2 weeks of late fees)
-        # self.assertEqual(library_service.calculate_late_fee_for_book("123456", 1), (True, "You currently have $10.50 in late fees for this book."))
-
-        # # test for for max late fee for one book (15$)
-        # self.assertEqual(library_service.calculate_late_fee_for_book("123456", 1), (True, "You currently have the maximum amount ($15) in late fees for this book."))
 
 if __name__ == "__main__":
     unittest.main()
