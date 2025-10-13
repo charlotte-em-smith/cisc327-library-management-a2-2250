@@ -180,7 +180,7 @@ def calculate_late_fee_for_book(patron_id: str, book_id: int) -> Dict:
             borrowed = True
             break
     if borrowed == False:
-        return False, "Invalid book id."
+        return False, books
 
     if book["is_overdue"] == False:
         return { 
@@ -234,7 +234,7 @@ def search_books_in_catalog(search_term: str, search_type: str) -> List[Dict]:
     
     
     if book == None:
-        return [] 
+        return [search_type] 
     return book
 
 def get_patron_status_report(patron_id: str) -> Dict:
