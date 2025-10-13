@@ -7,6 +7,9 @@ class testR4(unittest.TestCase):
         # test patron for existence
         self.assertEqual(library_service.return_book_by_patron(None, 1), (False, "Invalid patron ID. Must be exactly 6 digits."))
 
+        # test patron for too short
+        self.assertEqual(library_service.return_book_by_patron("123", 1), (False, "Invalid patron ID. Must be exactly 6 digits."))
+
         # test book id for existence
         self.assertEqual(library_service.return_book_by_patron("123456", None), (False, 'Invalid book id.'))
 
@@ -21,7 +24,7 @@ class testR4(unittest.TestCase):
         #self.assertEqual(database.update_book_availability(3, -1), False)
 
         # test for late fees displayed
-        # success, message = library_service.return_book_by_patron(123457, 1)
+        # success, message = library_service.return_book_by_patron("123457", 1)
     
         # assert success == True
         # assert "due in late fees" in message
