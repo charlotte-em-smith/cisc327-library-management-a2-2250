@@ -234,7 +234,7 @@ def search_books_in_catalog(search_term: str, search_type: str) -> List[Dict]:
     
     
     if book == None:
-        return [search_type == "Title"] 
+        return [] 
     return book
 
 def get_patron_status_report(patron_id: str) -> Dict:

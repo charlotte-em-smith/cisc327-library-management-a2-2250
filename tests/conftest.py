@@ -5,3 +5,4 @@ import database
 def setup_databse():
     print("initializing database.")
     database.init_database()
+    database.add_sample_data()
