@@ -148,7 +148,7 @@ def return_book_by_patron(patron_id: str, book_id: int) -> Tuple[bool, str]:
     return True, f'Successfully returned "{book["title"]}". Return date: {return_date.strftime("%Y-%m-%d")}.'
 
 #late fees is implemented.
-def calculate_late_fee_for_book(patron_id: str, book_id: int) -> Dict:
+def calculate_late_fee_for_book(patron_id: str, book_id: int, start_date=0, end_date=0) -> Dict:
     """
     Calculate late fees for a specific book.
     
@@ -176,6 +176,11 @@ def calculate_late_fee_for_book(patron_id: str, book_id: int) -> Dict:
             break
     if borrowed == False:
         return False, books
+    
+    if start_date != 0 or end_date != 0:
+        book['is_overdue'] = True
+        book['due_date'] = start_date
+        book['return_date'] = end_date
 
     if book["is_overdue"] == False:
         return { 

@@ -9,6 +9,19 @@ class testR5(unittest.TestCase):
         result = library_service.calculate_late_fee_for_book("123458", 2)
     
         assert result['days_overdue'] == 0
+        assert result['fee_amount'] == 0.00
+        assert result['status'] == 'No late fee'
+
+        # test for no overdue fees
+        library_service.return_book_by_patron("123458", 2)
+        start_date = datetime.now()
+        end_date = start_date + 7 # 1 week overdue
+        self.assertEqual(library_service.borrow_book_by_patron("123458", 2, start_date, end_date), (True, f'Successfully borrowed "To Kill a Mockingbird". Due date: 2025-10-27.'))
+        result = library_service.calculate_late_fee_for_book("123458", 2)
+    
+        assert result['days_overdue'] == 7
+        assert result['fee_amount'] == 3.50
+        assert result['status'] == 'Acquired late fees'
         
 
         # change function to have optional start and end date
