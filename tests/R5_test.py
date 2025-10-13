@@ -8,7 +8,7 @@ class testR5(unittest.TestCase):
         self.assertEqual(library_service.borrow_book_by_patron("123458", 2), (True, f'Successfully borrowed "To Kill a Mockingbird". Due date: 2025-10-27.'))
         result = library_service.calculate_late_fee_for_book("123458", 2)
     
-        assert result(1) == 0
+        assert result['days_overdue'] == 0
         
 
         # change function to have optional start and end date
