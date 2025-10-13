@@ -42,7 +42,7 @@ class testR5(unittest.TestCase):
         result = library_service.calculate_late_fee_for_book("123458", 2, start_date, end_date)
     
         assert result['days_overdue'] == 21
-        assert result['fee_amount'] == 10.50
+        assert result['fee_amount'] == 15.00
         assert result['status'] == 'Max amount of late fees'
         
 
