@@ -1,5 +1,7 @@
-import library_service
-import database
+#import library_service
+from CISC_327_CS.services import library_service
+#import database
+from CISC_327_CS import database
 import unittest
 
 class testR4(unittest.TestCase):
