@@ -12,11 +12,13 @@ class testR6(unittest.TestCase):
         # test type for existence
         self.assertEqual(library_service.search_books_in_catalog("test", None), [])
         #self.assertEqual(library_service.search_books_in_catalog("test", None), (False, "Search type is required."))
-
-        # test for case sensitive title
+    
+    def test_case_sensitive(self):
+        # test for case sensitive title 
         self.assertEqual(library_service.search_books_in_catalog("The Great gatsby", "Title"), [{'author': 'F. Scott Fitzgerald', 'available_copies': 3, 'id': 1, 'isbn': '9780743273565', 'title': 'The Great Gatsby', 'total_copies': 3}])
-        #self.assertEqual(library_service.search_books_in_catalog("The Hunger games", "Title"), (True, "Search is successful"))   
-
+        #self.assertEqual(library_service.search_books_in_catalog("The Hunger games", "Title"), (True, "Search is successful")) 
+        # 
+    def test_partial_matching(self):  
         # test for partial matching
         self.assertEqual(library_service.search_books_in_catalog("The great", "Title"), [{'author': 'F. Scott Fitzgerald', 'available_copies': 3, 'id': 1, 'isbn': '9780743273565', 'title': 'The Great Gatsby', 'total_copies': 3}])
         #self.assertEqual(library_service.search_books_in_catalog("1111111111111", "ISBN"), (True, "Search is successful"))
