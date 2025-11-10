@@ -40,6 +40,7 @@ jobs:
           python -m pip install pytest 
           pip install -r requirements.txt
           pip install pytest
+          pip install pytest-cov
           pip install --force-reinstall pytest pytest-mock
 
 #      - name: Install package
@@ -48,4 +49,6 @@ jobs:
       - name: Run tests
         run: |
           python -m pytest -v
-        #working-directory: ./CISC_327_CS
+          python -m pytest --cov=services --cov=. --cov-report=xml --cov-report=term -v
+          python -m pytest --cov=services --cov=. --cov-branch --cov-report=xml --cov-report=term -v
+        #pytest --cov=services --cov-report=html --cov-report=term tests/
