@@ -31,7 +31,6 @@ class TestR4():
 
     def test_availability_error_returning_book(self, mocker):
         mocker.patch('CISC_327_CS.services.library_service.get_patron_borrowed_books', return_value=[{'book_id': 1, 'title': 'test', 'author' : "test", "borrow_date" : "2025-07-09", "return_date": "2025-07-09",  'is_overdue': '2025-010-11'}])
-        #mocker.patch('CISC_327_CS.services.library_service.get_patron_borrow_count', return_value=2)
         mocker.patch('CISC_327_CS.services.library_service.update_book_availability', return_value=False)
 
         result = library_service.return_book_by_patron('123456', 1)
@@ -40,7 +39,6 @@ class TestR4():
     
     def test_updating_error_returning_book(self, mocker):
         mocker.patch('CISC_327_CS.services.library_service.get_patron_borrowed_books', return_value=[{'book_id': 1, 'title': 'test', 'author' : "test", "borrow_date" : "2025-07-09", "return_date": "2025-07-09",  'is_overdue': '2025-010-11'}])
-        #mocker.patch('CISC_327_CS.services.library_service.get_patron_borrow_count', return_value=2)
         mocker.patch('CISC_327_CS.services.library_service.update_borrow_record_return_date', return_value=False)
 
         result = library_service.return_book_by_patron('123456', 1)
@@ -48,25 +46,10 @@ class TestR4():
 
     def test_returning_book(self, mocker):
         mocker.patch('CISC_327_CS.services.library_service.get_patron_borrowed_books', return_value=[{'book_id': 1, 'title': 'test', 'author' : "test", "borrow_date" : "2025-07-09", "return_date": "2025-07-09",  'is_overdue': '2025-010-11'}])
-        #mocker.patch('CISC_327_CS.services.library_service.get_patron_borrow_count', return_value=2)
-        #mocker.patch('CISC_327_CS.services.library_service.update_borrow_record_return_date', return_value=False)
 
         success, msg = library_service.return_book_by_patron('123456', 1)
         assert success == True
         assert "Successfully returned" in msg
-
-        # test for update of available copies
-        # test book availibility function on a book that shouldn't increase (7/7copies available)
-        #self.assertEqual(database.update_book_availability(7, 1), False)
-
-        # test book availibility function on a book that souldn't decrease (no books left)
-        #self.assertEqual(database.update_book_availability(3, -1), False)
-
-        # test for late fees displayed
-        # success, message = library_service.return_book_by_patron("123457", 1)
-    
-        # assert success == True
-        # assert "due in late fees" in message
 
 if __name__ == "__main__":
     unittest.main()
