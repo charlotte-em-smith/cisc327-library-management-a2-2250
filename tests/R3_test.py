@@ -1,28 +1,72 @@
 #import library_service
 from CISC_327_CS.services import library_service
+from unittest.mock import Mock
+from unittest.mock import patch
+from CISC_327_CS import database
 import unittest
 
-class testR3(unittest.TestCase):
-    def test_R3(self):
+class TestR3():
+    def test_valid_patron(self):
         # test patron for existence
-        self.assertEqual(library_service.borrow_book_by_patron(None, 1), (False, "Invalid patron ID. Must be exactly 6 digits."))
-
+        success, msg = library_service.borrow_book_by_patron(None, 1)
+        assert success == False
+        assert msg == "Invalid patron ID. Must be exactly 6 digits."
+    
+    def test_valid_patron_less(self):
         # test for valid patron (less)
-        self.assertEqual(library_service.borrow_book_by_patron("123", 1), (False, "Invalid patron ID. Must be exactly 6 digits."))
+        success, msg = library_service.borrow_book_by_patron("123", 1)
+        assert success == False
+        assert msg == "Invalid patron ID. Must be exactly 6 digits."
 
+    def test_valid_patron_more(self):
         # test for valid patron (more)
-        self.assertEqual(library_service.borrow_book_by_patron("1234567", 1), (False, "Invalid patron ID. Must be exactly 6 digits."))
+        success, msg = library_service.borrow_book_by_patron("1234567", 1)
+        assert success == False
+        assert msg == "Invalid patron ID. Must be exactly 6 digits."
 
-        # test if book exists 
-        self.assertEqual(library_service.borrow_book_by_patron("123456", 9999999999999), (False, "Book not found."))
+    def test_invalid_book_id(self):
+        # test for invalid book id 
+        success, msg = library_service.borrow_book_by_patron("123456", 9999999999999)
+        assert success == False
+        assert msg == "Book not found."
 
-        # test if patron has gone over borrowing limits
-        #for i in range(5):
-        #    success, message = library_service.borrow_book_by_patron("111111", 2)
-        #self.assertEqual(library_service.borrow_book_by_patron("123456", 3), (False, "You have reached the maximum borrowing limit of 5 books."))
+    def test_copy_not_available(self, mocker):
+        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test', 'available_copies': 0})
 
-        # test if available copies allows borrowing (neg)
-        #self.assertEqual(library_service.borrow_book_by_patron("123456", 1), (False, "This book is currently not available."))
+        success, msg = library_service.borrow_book_by_patron("123456", 1)
+        assert success == False
+        assert msg == "This book is currently not available."
+
+    def test_borrow_book_database_error(self, mocker):
+        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test', 'available_copies': 3})
+        mocker.patch('CISC_327_CS.services.library_service.get_patron_borrow_count', return_value=2)
+        mocker.patch('CISC_327_CS.services.library_service.insert_borrow_record', return_value=False)
+
+        result = library_service.borrow_book_by_patron('123456', 1)
+        assert result == (False, "Database error occurred while creating borrow record.")
+
+    def test_book_availability_database_error(self, mocker):
+        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test', 'available_copies': 3})
+        mocker.patch('CISC_327_CS.services.library_service.get_patron_borrow_count', return_value=2)
+        mocker.patch('CISC_327_CS.services.library_service.update_book_availability', return_value=False)
+
+        result = library_service.borrow_book_by_patron('123456', 1)
+        assert result == (False, "Database error occurred while updating book availability.")
+
+    def test_max_borrow_limits(self, mocker):
+        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test', 'available_copies': 3})
+        mocker.patch('CISC_327_CS.services.library_service.get_patron_borrow_count', return_value=6)
+
+        result = library_service.borrow_book_by_patron('123456', 1)
+        assert result == (False, "You have reached the maximum borrowing limit of 5 books.")
+
+    def test_borrow_book(self, mocker):
+        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test', 'available_copies': 3})
+        mocker.patch('CISC_327_CS.services.library_service.get_patron_borrow_count', return_value=1)
+
+        success, msg = library_service.borrow_book_by_patron("123458", 8)
+        assert "Successfully borrowed" in msg
+        assert success == True
 
 
 if __name__ == "__main__":

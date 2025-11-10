@@ -6,7 +6,6 @@ from CISC_327_CS.services import library_service
 from CISC_327_CS.services.payment_service import PaymentGateway
 
 
-# TODO make pyinit file (ask bree)
 class TestPayLateFees():
     def test_successful_payment(self, mocker):
         # mock the gateway return values
@@ -63,6 +62,24 @@ class TestPayLateFees():
 
         gateway_mock.process_payment.assert_called_once()
 
+    def test_less_than_zero(self):
+        success, txn_id, msg = PaymentGateway.process_payment(self, '123456', -1)
+        assert success == False
+        assert txn_id == ""
+        assert msg == "Invalid amount: must be greater than 0" 
+
+    def test_bigger_than_1000(self):
+        success, txn_id, msg = PaymentGateway.process_payment(self, '123456', 1001)
+        assert success == False
+        assert txn_id == ""
+        assert msg == "Payment declined: amount exceeds limit"
+
+    def test_invalid_patron_id_payment(self):
+        success, txn_id, msg = PaymentGateway.process_payment(self, '12345', 1)
+        assert success == False
+        assert txn_id == ""
+        assert msg == "Invalid patron ID format"
+
 class TestRefundLateFeePayment():
     def test_successful_refund(self):
         gateway_mock = Mock(spec=PaymentGateway)
@@ -109,4 +126,25 @@ class TestRefundLateFeePayment():
         assert success == False
 
         gateway_mock.refund_payment.assert_not_called()
+
+    def test_invalid_refund_amount(self):
+        success,  msg = PaymentGateway.refund_payment(self, 'txn_123456', -1)
+        assert success == False
+        assert msg == "Invalid refund amount" 
+
+    def test_invalid_id_payment_service(self):
+        success,  msg = PaymentGateway.refund_payment(self, '123456', 0)
+        assert success == False
+        assert msg == "Invalid transaction ID"
+
+    def test_verify_payment_status_invalid_ID(self):
+        success = PaymentGateway.verify_payment_status(self, '123456')
+        assert success["status"] == "not_found"
+        assert success["message"] == "Transaction not found"
+
+    def test_verify_payment_status_valid_ID(self):
+        success = PaymentGateway.verify_payment_status(self, 'txn_123456')
+        assert success["transaction_id"] == "txn_123456"
+        assert success["status"] == "completed"
+        assert success["amount"] == 10.50
 
