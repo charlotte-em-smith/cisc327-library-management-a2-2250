@@ -1,6 +1,6 @@
 #import library_service
-from CISC_327_CS.services import library_service
-from CISC_327_CS import database
+from ..services import library_service
+from .. import database
 import sqlite3
 import unittest
 
