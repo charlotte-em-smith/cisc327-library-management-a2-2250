@@ -1,5 +1,5 @@
 import pytest
-from CISC_327_CS import database
+from .. import database
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_databse():
