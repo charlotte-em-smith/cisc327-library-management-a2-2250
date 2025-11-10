@@ -1,6 +1,7 @@
 # Library Management System - Flask Web Application with SQLite
 
 [![CI](https://github.com/charlotte-em-smith/cisc327-library-management-a2-2250/actions/workflows/ci.yaml/badge.svg)](https://github.com/charlotte-em-smith/cisc327-library-management-a2-2250/actions/workflows/ci.yaml)
+[![codecov](https://codecov.io/gh/charlotte-em-smith/cisc327-library-management-a2-2250/branch/main/graph/badge.svg)](https://codecov.io/gh/charlotte-em-smith/cisc327-library-management-a2-2250)
 
 ## Overview
 
