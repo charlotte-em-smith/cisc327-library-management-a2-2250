@@ -56,7 +56,7 @@ class TestR1():
 
     def test_isb_exists(self):
         # test fnor existing book
-        success, msg = library_service.add_book_to_catalog("Sunrise on the Reaping", "Suzanne Collins", "2222222222222", 7)
+        success, msg = library_service.add_book_to_catalog("Sunrise on the Reaping", "F. Scott Fitzgerald", "9780743273565", 7)
         assert success == False
         assert msg == 'A book with this ISBN already exists.' 
 
