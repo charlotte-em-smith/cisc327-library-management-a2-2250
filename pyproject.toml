@@ -16,3 +16,6 @@ requires-python = ">=3.7"
 [tool.setuptools]
 py-modules = ["app", "database", "library_service"]  # Your standalone files
 packages = ["routes"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

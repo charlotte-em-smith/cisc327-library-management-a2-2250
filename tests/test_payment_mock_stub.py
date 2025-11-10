@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import Mock
 from unittest.mock import patch
-from CISC_327_CS.services import payment_service
-from CISC_327_CS.services import library_service
-from CISC_327_CS.services.payment_service import PaymentGateway
+from services import payment_service
+from services import library_service
+from services.payment_service import PaymentGateway
 
 #import payment_service
 #import library_service
@@ -16,8 +16,8 @@ class TestPayLateFees():
     def test_successful_payment(self, mocker):
         # mock the gateway return values
         gateway_mock = Mock(spec=PaymentGateway)
-        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test'})
-        mocker.patch('CISC_327_CS.services.library_service.calculate_late_fee_for_book', return_value={'fee_amount':3.00, 'days_overdue':3, 'status':'success'})
+        mocker.patch('services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test'})
+        mocker.patch('services.library_service.calculate_late_fee_for_book', return_value={'fee_amount':3.00, 'days_overdue':3, 'status':'success'})
 
         gateway_mock.process_payment.return_value = (True, "txn_123456", "Late fees for test")
         result = library_service.pay_late_fees('123456', 1, gateway_mock)
@@ -28,8 +28,8 @@ class TestPayLateFees():
     def test_payment_declined_by_gateway(self, mocker):
         gateway_mock = Mock(spec=PaymentGateway)
 
-        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test'})
-        mocker.patch('CISC_327_CS.services.library_service.calculate_late_fee_for_book', return_value={'fee_amount':3.00, 'days_overdue':3, 'status':'success'})
+        mocker.patch('services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test'})
+        mocker.patch('services.library_service.calculate_late_fee_for_book', return_value={'fee_amount':3.00, 'days_overdue':3, 'status':'success'})
 
         gateway_mock.process_payment.return_value = (False, None, "Payment declined")
         result = library_service.pay_late_fees('123456', 1, gateway_mock)
@@ -48,8 +48,8 @@ class TestPayLateFees():
     def test_zero_late_fees(self, mocker):
         gateway_mock = Mock(spec=PaymentGateway)
 
-        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test'})
-        mocker.patch('CISC_327_CS.services.library_service.calculate_late_fee_for_book', return_value={'fee_amount':0.00, 'days_overdue':0, 'status':'success'})
+        mocker.patch('services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test'})
+        mocker.patch('services.library_service.calculate_late_fee_for_book', return_value={'fee_amount':0.00, 'days_overdue':0, 'status':'success'})
         
         result = library_service.pay_late_fees('123456', 1)
         assert result == (False, "No late fees to pay for this book.", None)
@@ -59,8 +59,8 @@ class TestPayLateFees():
     def test_network_error_handling_exception(self, mocker):
         gateway_mock = Mock(spec=PaymentGateway)
 
-        mocker.patch('CISC_327_CS.services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test'})
-        mocker.patch('CISC_327_CS.services.library_service.calculate_late_fee_for_book', return_value={'fee_amount':3.00, 'days_overdue':3, 'status':'success'})
+        mocker.patch('services.library_service.get_book_by_id', return_value={'id': 1, 'title': 'test'})
+        mocker.patch('services.library_service.calculate_late_fee_for_book', return_value={'fee_amount':3.00, 'days_overdue':3, 'status':'success'})
 
         gateway_mock.process_payment.return_value = (False, "txn_123456", "Payment processing error: Gateway Error")
         result = library_service.pay_late_fees('123456', 1, gateway_mock)

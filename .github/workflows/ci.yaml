@@ -48,3 +48,4 @@ jobs:
       - name: Run tests
         run: |
           python -m pytest -v
+        working-directory: ./CISC_327_CS

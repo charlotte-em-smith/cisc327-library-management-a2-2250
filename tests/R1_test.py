@@ -1,5 +1,5 @@
 #import library_service
-from CISC_327_CS.services import library_service
+from services import library_service
 import unittest
 
 
@@ -62,8 +62,8 @@ class TestR1():
 
     def test_add_book_to_catalogue(self, mocker):
         # test for success message after adding a book  (change before actual thing)
-        mocker.patch('CISC_327_CS.services.library_service.get_book_by_isbn', return_value=False)
-        mocker.patch('CISC_327_CS.services.library_service.insert_book', return_value=True)
+        mocker.patch('services.library_service.get_book_by_isbn', return_value=False)
+        mocker.patch('services.library_service.insert_book', return_value=True)
 
         success, msg = library_service.add_book_to_catalog("Percy Jackson 1", "Suzanne Collins", "2222222222225", 5)
         #assert success == True
