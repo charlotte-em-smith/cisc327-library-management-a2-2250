@@ -36,12 +36,12 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .
+          pip install -e .
           python -m pip install pytest 
           pip install -r requirements.txt
 
-      - name: Install package
-        run: pip install --upgrade pip && pip install -e .
+#      - name: Install package
+#        run: pip install --upgrade pip && pip install -e .
 
       - name: Run tests
         run: python -m pytest -v

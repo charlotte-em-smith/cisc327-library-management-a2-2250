@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import Mock
 from unittest.mock import patch
-from ..services import payment_service
-from ..services import library_service
-from ..services.payment_service import PaymentGateway
+from CISC_327_CS.services import payment_service
+from CISC_327_CS.services import library_service
+from CISC_327_CS.services.payment_service import PaymentGateway
 
 
 class TestPayLateFees():
