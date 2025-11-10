@@ -5,12 +5,12 @@ Contains all the core business logic for the Library Management System
 
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
-from database import (
+from CISC_327_CS.database import (
     get_book_by_id, get_book_by_isbn, get_books_by_author, get_books_by_title, get_borrow_records, get_patron_borrow_count, get_patron_borrowed_books,
     insert_book, insert_borrow_record, update_book_availability,
     update_borrow_record_return_date, get_all_books
 )
-from .payment_service import PaymentGateway
+from CISC_327_CS.services.payment_service import PaymentGateway
 
 def add_book_to_catalog(title: str, author: str, isbn: str, total_copies: int) -> Tuple[bool, str]:
     """

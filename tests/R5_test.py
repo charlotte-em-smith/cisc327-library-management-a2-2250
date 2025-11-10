@@ -1,7 +1,5 @@
 #import library_service
-import sys
-sys.path.append('services')
-from services import library_service
+from CISC_327_CS.services import library_service
 import unittest
 from datetime import datetime, timedelta
 
