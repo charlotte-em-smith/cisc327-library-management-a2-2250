@@ -1,10 +1,13 @@
 #import library_service
 #import database
-from ..services import library_service
+import sys
+sys.path.append('services')
+from services import library_service
 from unittest.mock import Mock
 from unittest.mock import patch
-from .. import database
+#from .. import database
 import unittest
+
 
 class TestR3():
     def test_valid_patron(self):

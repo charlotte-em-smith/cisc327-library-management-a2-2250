@@ -1,6 +1,9 @@
 #import library_service
-from ..services import library_service
+import sys
+sys.path.append('services')
+from services import library_service
 import unittest
+
 
 class TestR1():
     def test_title(self):

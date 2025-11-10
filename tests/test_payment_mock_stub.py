@@ -1,11 +1,12 @@
 import unittest
+import sys
+sys.path.append('services')
 from unittest.mock import Mock
 from unittest.mock import patch
-from ..services import payment_service
-from ..services import library_service
-from ..services.payment_service import PaymentGateway
-#import sys
-#sys.path.append('../service')
+from services import payment_service
+from services import library_service
+from services.payment_service import PaymentGateway
+
 #import payment_service
 #import library_service
 #from payment_service import PaymentGateway

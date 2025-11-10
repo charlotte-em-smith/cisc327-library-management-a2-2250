@@ -1,9 +1,12 @@
 #import library_service
-from ..services import library_service
+import sys
+sys.path.append('services')
+from services import library_service
 #import database
-from .. import database
+#from .. import database
 #from CISC_327_CS import database
 import unittest
+
 
 class TestR4():
     def test_R4(self):
