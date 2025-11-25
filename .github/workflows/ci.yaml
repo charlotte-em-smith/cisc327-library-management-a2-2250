@@ -41,12 +41,23 @@ jobs:
           pip install pytest-playwright
           playwright install
 
-      - name: Run Flask     # And save process ID
+      # - name: Run Flask     # And save process ID
+      #   run: |
+      #     python app.py & 
+      #     echo $! > flask.pid
+      #     sleep 5
+      #   shell: bash
+
+      - name: Pull and run Docker container
         run: |
-          python app.py & 
-          echo $! > flask.pid
-          sleep 5
-        shell: bash
+          docker pull charlottesmith826/library-app:v1
+          docker run -d -p 5000:5000 --name flask-app charlottesmith826/library-app:v1
+
+      - name: Wait for App Start-up
+        run: |
+          for i in {1..30}; docker
+            curl -f http://localhost:5000 && break || sleep 1
+          done
 
       - name: Run tests
         run: |
@@ -54,5 +65,9 @@ jobs:
           python -m pytest --cov=services --cov=. --cov-report=xml --cov-report=term -v
           python -m pytest --cov=services --cov=. --cov-branch --cov-report=xml --cov-report=term -v
 
-      - name: Stop Flask app
-        run: kill $(cat flask.pid)
+      - name: Stop container
+        run: docker stop flask-app
+        if: always()
+
+      # - name: Stop Flask app
+      #   run: kill $(cat flask.pid)
