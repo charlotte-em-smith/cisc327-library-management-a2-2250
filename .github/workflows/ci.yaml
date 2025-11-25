@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: 
-        os: [ubuntu-latest]  # [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: 
           - "3.8"
           - "3.9"
@@ -45,13 +45,13 @@ jobs:
         run: |
           python app.py & 
           echo $! > flask.pid
-          sleep 5
+          sleep 10
+        shell: bash
 
-      # - name: Pull and run Docker container
-      #   run: |
-      #     docker pull charlottesmith826/library-app:v1
-      #     docker run -d -p 5000:5000 --name flask-app charlottesmith826/library-app:v1
-      #     sleep 10
+      - name: Check if Flask started
+        run: |
+          cat flask.log
+          curl -v http://127.0.0.1:5000/ || echo "Flask not responding"
 
       - name: Run tests
         run: |
@@ -59,9 +59,14 @@ jobs:
           python -m pytest --cov=services --cov=. --cov-report=xml --cov-report=term -v
           python -m pytest --cov=services --cov=. --cov-branch --cov-report=xml --cov-report=term -v
 
-      # - name: Stop container
-      #   run: docker stop flask-app
-      #   if: always()
+      - name: Show Flask logs if tests fail
+        if: failure()
+        run: cat flask.log
 
       - name: Stop Flask app
-        run: kill $(cat flask.pid)
+        if: always()
+        run: |
+          if [ -f flask.pid ]; then
+            kill $(cat flask.pid) || true
+          fi
+        shell: bash
