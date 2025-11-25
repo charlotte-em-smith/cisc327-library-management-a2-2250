@@ -48,29 +48,46 @@ jobs:
           sleep 10
         shell: bash
 
-      - name: Check if Flask log exists and show content
+      - name: Wait For Flask to Be Ready
         run: |
-          if [ -f flask.log ]; then
-            echo "Flask log found:"
-            cat flask.log
-          else
-            echo "Flask log not found!"
-            ls -la
-          fi
+          echo "waiting for Flask to start..."
+          for i in {1..10}; do 
+            if curl -f http://127.0.0.1:5000/ 2>/dev/null; then
+              echo "Flask is ready."
+              break
+            fi
+            sleep 1
+            if [ $i -eq 120 ]; then
+              echo "Flask failed to start within 2 minutes."
+              cat flask.log || true
+              exit 1
+            fi
+          done
         shell: bash
 
-      - name: Check if Flask is running
-        run: |
-          if [ -f flask.pid ]; then
-            PID=$(cat flask.pid)
-            echo "Flask PID: $PID"
-            ps -p $PID || echo "Process $PID not running"
-          else
-            echo "No PID file found"
-          fi
-          echo "Checking port 5000:"
-          curl -v http://127.0.0.1:5000/ || echo "Flask not responding"
-        shell: bash
+      # - name: Check if Flask log exists and show content
+      #   run: |
+      #     if [ -f flask.log ]; then
+      #       echo "Flask log found:"
+      #       cat flask.log
+      #     else
+      #       echo "Flask log not found!"
+      #       ls -la
+      #     fi
+      #   shell: bash
+
+      # - name: Check if Flask is running
+      #   run: |
+      #     if [ -f flask.pid ]; then
+      #       PID=$(cat flask.pid)
+      #       echo "Flask PID: $PID"
+      #       ps -p $PID || echo "Process $PID not running"
+      #     else
+      #       echo "No PID file found"
+      #     fi
+      #     echo "Checking port 5000:"
+      #     curl -v http://127.0.0.1:5000/ || echo "Flask not responding"
+      #   shell: bash
 
       - name: Run tests
         run: |
@@ -78,13 +95,13 @@ jobs:
           python -m pytest --cov=services --cov=. --cov-report=xml --cov-report=term -v
           python -m pytest --cov=services --cov=. --cov-branch --cov-report=xml --cov-report=term -v
 
-      - name: Show Flask logs if tests fail
-        if: failure()
-        run: |
-          if [ -f flask.log ]; then
-            cat flask.log
-          fi
-        shell: bash
+      # - name: Show Flask logs if tests fail
+      #   if: failure()
+      #   run: |
+      #     if [ -f flask.log ]; then
+      #       cat flask.log
+      #     fi
+      #   shell: bash
 
       - name: Stop Flask app
         if: always()
