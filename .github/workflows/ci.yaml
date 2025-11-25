@@ -42,6 +42,8 @@ jobs:
           pip install pytest
           pip install pytest-cov
           pip install --force-reinstall pytest pytest-mock
+          pip install pytest-playwright
+          playwright install
 
 #      - name: Install package
 #        run: pip install --upgrade pip && pip install -e .
