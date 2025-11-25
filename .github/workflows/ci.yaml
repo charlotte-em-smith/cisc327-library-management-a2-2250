@@ -46,6 +46,7 @@ jobs:
           python app.py & 
           echo $! > flask.pid
           sleep 5
+        shell: bash
 
       - name: Run tests
         run: |
