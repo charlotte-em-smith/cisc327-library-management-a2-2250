@@ -48,10 +48,29 @@ jobs:
           sleep 10
         shell: bash
 
-      - name: Check if Flask started
+      - name: Check if Flask log exists and show content
         run: |
-          cat flask.log
+          if [ -f flask.log ]; then
+            echo "Flask log found:"
+            cat flask.log
+          else
+            echo "Flask log not found!"
+            ls -la
+          fi
+        shell: bash
+
+      - name: Check if Flask is running
+        run: |
+          if [ -f flask.pid ]; then
+            PID=$(cat flask.pid)
+            echo "Flask PID: $PID"
+            ps -p $PID || echo "Process $PID not running"
+          else
+            echo "No PID file found"
+          fi
+          echo "Checking port 5000:"
           curl -v http://127.0.0.1:5000/ || echo "Flask not responding"
+        shell: bash
 
       - name: Run tests
         run: |
@@ -61,7 +80,11 @@ jobs:
 
       - name: Show Flask logs if tests fail
         if: failure()
-        run: cat flask.log
+        run: |
+          if [ -f flask.log ]; then
+            cat flask.log
+          fi
+        shell: bash
 
       - name: Stop Flask app
         if: always()
