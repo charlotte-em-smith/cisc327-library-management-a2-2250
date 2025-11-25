@@ -44,6 +44,9 @@ def init_database():
             FOREIGN KEY (book_id) REFERENCES books (id)
         )
     ''')
+
+    if conn.execute('SELECT isbn FROM books WHERE isbn = "3333333333333"'):
+        conn.execute('DELETE FROM books WHERE isbn = "3333333333333"')
     
     conn.commit()
     conn.close()
@@ -251,3 +254,4 @@ def get_borrow_records(patron_id: str):
         })
 
     return borrowed_records
+
