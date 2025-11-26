@@ -24,13 +24,16 @@ def test_e2e_1(page: Page):
     page.fill('input[name="patron_id"]', "123456")
     page.get_by_role("button", name="Borrow").click()
 
+    # Obtain the book id of searched book
+    book_id = page.get_by_text('To Kill a Mockingbird').locator('xpath=ancestor::tr').locator('input[name="book_id"]').get_attribute('value')
+
     # Go to book Return Book, check it has correct heading
     page.get_by_role("link", name="Return Book").click()
     expect(page.get_by_role("heading", name="Return Book")).to_be_visible()
 
     # Fill out info to return the book, and return it
     page.fill('#patron_id', '123456')
-    page.fill('#book_id', "2")
+    page.fill('#book_id', book_id)
     page.get_by_role("button", name="Process Return").click()
 
     # Ensure it was properly returned
